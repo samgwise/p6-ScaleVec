@@ -5,7 +5,8 @@
   "build-depends" : [ ],
   "depends" : [
     "Serialise::Map",
-    "Result"
+    "Result",
+    "JSON::Tiny"
   ],
   "description" : "A flexible yet accurate music representation system.",
   "license" : "Artistic-2.0",
