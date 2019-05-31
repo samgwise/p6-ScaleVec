@@ -4,7 +4,6 @@ use Serialise::Map;
 class ScaleVec::Chord::System::Foundation does Serialise::Map {
   use ScaleVec::Chord::System::Foundation::Element;
   use Result;
-  use Result::Imports;
 
   has ScaleVec::Chord::System::Foundation::Element @.chord-system;
 
@@ -20,8 +19,8 @@ class ScaleVec::Chord::System::Foundation does Serialise::Map {
     )
   }
 
-  method build-system( --> Result) {
-    return Error "Empty attribute \@.chord-system, unable to build ScaleVec::Chord::System." unless @!chord-system;
+  method build-system( --> Result::Any) {
+    return Err "Empty attribute \@.chord-system, unable to build ScaleVec::Chord::System." unless @!chord-system;
 
     reduce {
       my ($l, $r) = ($^a, $^b);

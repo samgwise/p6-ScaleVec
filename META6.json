@@ -5,7 +5,7 @@
   "build-depends" : [ ],
   "depends" : [
     "Serialise::Map",
-    "Result",
+    "Result:ver<0.2.0+>",
     "JSON::Tiny"
   ],
   "description" : "A flexible yet accurate music representation system.",
@@ -43,5 +43,5 @@
     "Transposition"
   ],
   "test-depends" : [ ],
-  "version" : "0.0.4"
+  "version" : "0.0.5"
 }

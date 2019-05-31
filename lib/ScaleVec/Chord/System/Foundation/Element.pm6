@@ -5,7 +5,6 @@ class ScaleVec::Chord::System::Foundation::Element does Serialise::Map {
   use ScaleVec;
   use ScaleVec::Chord::Set;
   use Result;
-  use Result::Imports;
 
   has ScaleVec  %.pitch-spaces;
   has ScaleVec::Chord::Set    $.chord-set;
@@ -26,10 +25,10 @@ class ScaleVec::Chord::System::Foundation::Element does Serialise::Map {
     )
   }
 
-  method build-system( --> Result) {
+  method build-system( --> Result::Any) {
     given $!chord-set.build-system(%!pitch-spaces) {
       when Result::Err {
-        return Error qq:to/ERR/.chomp
+        return Err qq:to/ERR/.chomp
         { .error }
         Unable to build chord system for pitch-spaces: { %!pitch-spaces.keys.join: ', ' }.
         ERR

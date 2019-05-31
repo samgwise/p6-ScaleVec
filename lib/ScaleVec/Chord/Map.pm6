@@ -4,21 +4,20 @@ class ScaleVec::Chord::Map {
   use ScaleVec;
   use ScaleVec::Chord::Graph;
   use Result;
-  use Result::Imports;
 
   has ScaleVec      %!symbol-to-sv{Str};
   has Str               %!sv-to-symbol{ScaleVec};
   has ScaleVec::Chord::Graph::PV  %!sv-to-pv{ScaleVec};
   has ScaleVec      %!pv-to-sv{ScaleVec::Chord::Graph::PV};
 
-  method relate(Str $symbol, ScaleVec $sv, ScaleVec::Chord::Graph::PV $pv --> Result) {
+  method relate(Str $symbol, ScaleVec $sv, ScaleVec::Chord::Graph::PV $pv --> Result::Any) {
     # Check for collisions
-    return Error "\%symbol<$symbol> already exists." if %!symbol-to-sv{$symbol}:exists;
-    return Error "ScaleVec to \%symbol<$symbol> already exists as { %!sv-to-symbol{$sv} }."
+    return Err "\%symbol<$symbol> already exists." if %!symbol-to-sv{$symbol}:exists;
+    return Err "ScaleVec to \%symbol<$symbol> already exists as { %!sv-to-symbol{$sv} }."
       if %!sv-to-symbol{$sv}:exists;
-    return Error "ScaleVec to PitchVector already exists realted to \%symbol<$symbol>."
+    return Err "ScaleVec to PitchVector already exists realted to \%symbol<$symbol>."
       if %!sv-to-pv{$sv}:exists;
-    return Error "PitchVector to ScaleVec already exists related to \%symbol<$symbol>."
+    return Err "PitchVector to ScaleVec already exists related to \%symbol<$symbol>."
       if %!pv-to-sv{$pv}:exists;
 
     # Add relationship
@@ -26,7 +25,7 @@ class ScaleVec::Chord::Map {
     %!sv-to-symbol{$sv} = $symbol;
     %!sv-to-pv{$sv} = $pv;
     %!pv-to-sv{$pv} = $sv;
-    OK True;
+    Ok True;
   }
 
   method merge(ScaleVec::Chord::Map $other --> ScaleVec::Chord::Map) {

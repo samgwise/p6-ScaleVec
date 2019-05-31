@@ -8,7 +8,6 @@ role ScaleVec::Chord::Set does Serialise::Map {
   use ScaleVec::Chord::System;
   use ScaleVec::Scale::Fence;
   use Result;
-  use Result::Imports;
 
   has ScaleVec::Scale::Fence $.pc-space = ScaleVec::Scale::Fence.new(
     :lower-limit(0)
@@ -18,7 +17,7 @@ role ScaleVec::Chord::Set does Serialise::Map {
 
   has ScaleVec %.chords;
 
-  method build-system(ScaleVec %pitch-spaces --> Result) {
+  method build-system(ScaleVec %pitch-spaces --> Result::Any) {
     my ScaleVec::Chord::Graph %chord-graphs;
     my ScaleVec::Chord::Map $chord-map .= new;
     for %pitch-spaces.kv -> $label-space, $space {
@@ -29,7 +28,7 @@ role ScaleVec::Chord::Set does Serialise::Map {
           # Add graph element to system map and map the chord onto the space
           given $chord-map.relate("$label-space:$label-chord", $chord.map-onto($space), $pv) {
             when Result::Err {
-              return Error qq:to/ERR/.chomp
+              return Err qq:to/ERR/.chomp
               { .error }
               Unable to add relation for '$label-space:$label-chord' as it will overwrite elements of an existing relationship.
               ERR
@@ -37,12 +36,12 @@ role ScaleVec::Chord::Set does Serialise::Map {
           }
         }
         else {
-          return Error "Failed when adding '$label-space: $label-chord' to graph.";
+          return Err "Failed when adding '$label-space: $label-chord' to graph.";
         }
       }
       %chord-graphs{$label-space} = $chord-graph;
     }
-    OK ScaleVec::Chord::System.new( :graph(%chord-graphs), :map($chord-map) );
+    Ok ScaleVec::Chord::System.new( :graph(%chord-graphs), :map($chord-map) );
   }
 
   #

@@ -3,7 +3,6 @@ use v6;
 unit module Voicer;
 use ScaleVec;
 use Result;
-use Result::Imports;
 
 # A simplistic voicing allocator which returns a Seq of ScaleVec steps, high to low.
 # The bass voice will be allocated at the end.
